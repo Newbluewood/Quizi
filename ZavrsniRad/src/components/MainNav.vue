@@ -45,14 +45,15 @@ function hideNawbar() {
 }
 .nav > a {
   border: 1px solid black;
-  padding: 0.4rem 2rem;
+  padding: 0 2rem;
   text-align: center;
-  margin: 2px;
+  margin: 4px;
   width: 100%;
-  font-size: larger;
+  font-size: 1.3rem;
+  height: 50px;
 }
 .navBurger {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   padding: 0 0.5rem;
 }
 @media (min-width: 1024px) {

@@ -124,13 +124,15 @@ a:hover {
 }
 .backtotop,
 .arrow {
-  width: 50px;
-  height: 50px;
+  display: flex;
+  align-items: center;
+  width: 40px;
+  height: 40px;
   border: 4px solid var(--color-border);
   border-radius: 99rem;
   position: fixed;
-  right: 20px;
-  bottom: 10px;
+  right: 25px;
+  bottom: 15px;
   cursor: pointer;
   font-size: 20px;
   z-index: 9998;
@@ -268,10 +270,24 @@ nav {
   }
 }
 @media (max-width: 380px) {
+  .info {
+    transform: scale(0.9);
+    top: 0px;
+    left: -10px;
+  }
+  .LoginBoard {
+    transform: scale(0.9);
+    right: -20px;
+    top: 0px;
+  }
+  .showAP {
+    left: 100px;
+  }
   .public {
-    top: 40px;
+    top: 20px;
     transform: scale(0.5);
     z-index: 300;
+    left: -60px;
   }
   header {
     position: sticky;
