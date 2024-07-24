@@ -11,7 +11,8 @@ const quizState = useQuizStore()
 const usersStore = useUsersStore()
 let Questions = ref([])
 const points = ref(0)
-let notAnswered = []
+const endy = ref(false)
+const notAnswered = ref([])
 const UserId = usersStore.getUserId()
 
 // PopUp/Modal - props //
@@ -29,48 +30,75 @@ function ManageWarn(thrutines) {
   showWarn.value = false
   WarnProp.value = thrutines
   if (WarnProp.value) {
-    if (notAnswered.length === 0) {
+    if (notAnswered.value.length === 0) {
       quizState.isEnd = true
       createScoreStamp()
-      notAnswered = []
     } else {
       getOut()
     }
   }
-  notAnswered = []
+  notAnswered.value = []
+  points.value = 0
 }
 
 // Methods
 
 function getOut() {
-  quizState.chosenQuestions = []
-  quizState.isEnd = false
-  quizState.isFocused = false
-  quizState.isFetched = false
-  quizState.start = false
+  quizState.getOut()
+}
+
+function getDateStamp() {
+  const date = new Date()
+  const PYear = date.getFullYear()
+  const PMonth = date.getMonth()
+  const PDate = date.getDate()
+  const PHour = date.getHours()
+  const PMinutes = date.getMinutes()
+
+  const utcDate = new Date(Date.UTC(PYear, PMonth, PDate, PHour, PMinutes)).toUTCString()
+  return utcDate
 }
 
 function createScoreStamp() {
   const scoreStamp = {}
-  let AllRes = usersStore.getRESOULTS()
-  const AllResults = AllRes
+  /* let AllRes = usersStore.getRESOULTS()
+  console.log('ALL RESOULTS, get', AllRes)
+  const AllResults = AllRes*/
+  const AllRes = localStorage.getItem('AllResults')
+  const AllResults = JSON.parse(AllRes)
 
-  if (UserId != 0) {
+  if (UserId.value != 0) {
     for (let result of AllResults) {
       if (result.id === UserId.value) {
         const UserQuizes = ref([])
         const NoofQuizes = ref(0)
         UserQuizes.value = result.quizes
         NoofQuizes.value = UserQuizes.value.length
-        scoreStamp.id = NoofQuizes.value + 1
-        scoreStamp.date = 'today_now'
+        console.log('UserQuizes', UserQuizes.value)
+        scoreStamp.no = NoofQuizes.value + 1
+        scoreStamp.date = getDateStamp()
         scoreStamp.score = points.value
         UserQuizes.value.push(scoreStamp)
-        console.log('New: ', AllResults)
+        console.log('New1: ', AllResults)
         usersStore.RESOULTS = AllResults
-        localStorage.setItem('QuestionsAll', JSON.stringify(AllResults))
+        localStorage.setItem('AllResults', JSON.stringify(AllResults))
+        return
       }
     }
+    const newUserTemplate = {}
+    newUserTemplate.id = UserId.value
+    newUserTemplate.nickname = usersStore.UserName
+    newUserTemplate.quizes = []
+    const newQuiz = {}
+    newQuiz.no = 1
+    newQuiz.date = 'today_now'
+    newQuiz.score = points.value
+    console.log('points', points.value)
+    newUserTemplate.quizes.push(newQuiz)
+    console.log('New2: ', AllResults)
+    AllResults.push(newUserTemplate)
+    usersStore.RESOULTS = AllResults
+    localStorage.setItem('AllResults', JSON.stringify(AllResults))
   } else {
     console.log('not Loged User')
   }
@@ -79,24 +107,26 @@ function createScoreStamp() {
 function finishChecker() {
   for (let i = 0; i <= quizState.isChecked.length; i++) {
     if (quizState.isChecked[i] === null) {
-      notAnswered.push(i + 1)
+      notAnswered.value.push(i + 1)
     }
   }
-  if (notAnswered.length != 0) {
-    console.log('notAnswered', notAnswered.length) // Checkouts !! //
+  if (notAnswered.value.length != 0) {
+    console.log('notAnswered', notAnswered.value.length) // Checkouts !! //
     showWarn.value = true
     WarnMesage.value =
-      " You didn't answer on Question: \n " + notAnswered + ' Are you shure abouth that ??? '
+      " You didn't answer on Question: \n " + notAnswered.value + ' Are you shure abouth that ??? '
   }
 
-  if (notAnswered.length == 0) {
-    console.log('notAnswered', notAnswered.length) // Checkouts !! //
+  if (notAnswered.value.length == 0) {
+    console.log('notAnswered', notAnswered.value.length) // Checkouts !! //
     showWarn.value = true
     WarnMesage.value = ' Are you shure abouth that ??? '
   }
 
   for (let rezultat of quizState.getResoults()) {
-    points.value += rezultat.points.value
+    console.log('PV', points.value)
+    console.log('rezultat', rezultat.points)
+    points.value += rezultat.points
   }
   console.log('REZULTATI 1234: ', points.value)
   points.value = (points.value / 50) * 100
@@ -134,6 +164,15 @@ watch(
     <!-- button section -->
 
     <div class="buttonsSection">
+      <div
+        class="loading"
+        v-show="!quizState.isFetched && quizState.start && quizState.errorMsg === ''"
+      >
+        <div>Loading...</div>
+        <div class="frameLoad">
+          <div class="ball"></div>
+        </div>
+      </div>
       <div class="buttonwrapper">
         <button
           v-show="quizState.start && !quizState.isEnd"
@@ -153,6 +192,7 @@ watch(
         </button>
         <button
           v-show="!quizState.isEnd && quizState.isFetched"
+          :style="{ backgroundColor: !endy ? 'grey' : '' }"
           class="button-main"
           @click="finishChecker"
         >
@@ -172,6 +212,9 @@ watch(
         </button>
         <button v-show="quizState.start" class="button-main" @click="quizState.getQuestions">
           New One
+        </button>
+        <button v-show="quizState.isEnd" class="button-main">
+          <AppLink to="/board">Board</AppLink>
         </button>
       </div>
     </div>
@@ -239,7 +282,7 @@ watch(
                         : ''
                     "
                     v-for="(answer, key, index) in question.answers"
-                    :key="answer"
+                    :key="answer + key"
                     v-show="answer != null"
                     @click="quizState.eventsManager(question.id, key, index)"
                   >
@@ -303,6 +346,24 @@ watch(
 </template>
 
 <style scoped>
+.ball {
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-text);
+  border-radius: 1rem;
+  position: relative;
+  left: 8px;
+  animation: 3s ease-in-out 1s infinite loading;
+}
+.loading {
+  display: flex;
+  align-items: center;
+
+  width: 150px;
+  height: 20px;
+  background-color: var(--color-background-mute);
+  border-radius: 1rem;
+}
 .frame {
   width: 330px;
 }
@@ -379,7 +440,6 @@ watch(
 .Test.isActive {
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
   max-width: 100%;
   height: auto;
@@ -405,6 +465,10 @@ watch(
 }
 
 @media (min-width: 740px) {
+  .buttonsSection {
+    position: fixed;
+    bottom: 100px;
+  }
   .frame {
     width: 100%;
   }
@@ -413,7 +477,7 @@ watch(
     padding: 0 2rem;
   }
   .Questions {
-    width: fit-content;
+    /* width: fit-content; */
     height: fit-content;
     width: 1200px;
   }
@@ -438,7 +502,7 @@ watch(
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 750px;
+    height: max-content;
     width: 100%;
     margin-top: 0;
   }
@@ -447,7 +511,8 @@ watch(
     height: fit-content;
   }
   .answer-box {
-    width: 100x;
+    width: 100%;
+    max-width: 100%;
   }
 
   .answer {
@@ -471,7 +536,7 @@ watch(
   }
   .Test {
     height: fit-content;
-    margin: 0;
+    margin: 1rem;
     padding: 0;
   }
 
@@ -559,6 +624,28 @@ watch(
   .CarouselNext.mobile,
   .CarouselPrevious.mobile {
     display: block;
+  }
+}
+@keyframes loading {
+  0% {
+    transform: translateX(60px);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(40px);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(60px);
+    opacity: 0.2;
   }
 }
 </style>

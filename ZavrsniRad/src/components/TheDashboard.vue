@@ -18,7 +18,7 @@ function fillBar(prop) {
 </script>
 <template>
   <div class="Dashboard">
-    <span> - Average - </span><span class="points">{{ sirina }} %</span>
+    <span> - Average - </span><span class="points">{{ sirina.toFixed(0) }} %</span>
     <div class="bar">
       <div class="progres" :style="{ width: sirina + '%' }"></div>
     </div>

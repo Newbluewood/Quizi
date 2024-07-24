@@ -35,9 +35,9 @@
       </p>
       <h2>About the APIs :</h2>
       <p>
-        auto_awesome Translate from: Bosnian 188 / 5,000 There is also a link to the API I used on
-        the page. Thanks to all those wonderful people who make APIs, although some bass are not the
-        best supported, still an interesting thing to practice. Cheers and ENJOY!
+        There is also a link to the API I used on the page. Thanks to all those wonderful people who
+        make APIs, although some bass are not the best supported, still an interesting thing to
+        practice. Cheers and ENJOY!
       </p>
     </div>
   </div>

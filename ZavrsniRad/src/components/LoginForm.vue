@@ -1,9 +1,11 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useUsersStore } from '@/stores/User'
+import { useQuizStore } from '@/stores/Quiz'
 import { useRouter } from 'vue-router'
 
 const usersStore = useUsersStore()
+const quizState = useQuizStore()
 const router = useRouter()
 
 const username = ref('')
@@ -18,9 +20,12 @@ watch(
   () => {
     if (usersStore.isLoggedIn === false) {
       usersStore.UserName = 'Log in'
+      usersStore.UserId = 0
+      quizState.getOut()
     } else {
       router.push({ path: '/board' })
       message.value = ''
+      quizState.getOut()
     }
   }
 )

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       clearInterval(interval)
     }
+    a++
   }, 10000)
 })
 

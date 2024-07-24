@@ -7,46 +7,72 @@ const results = ref(usersStore.getRESOULTS())
 
 const UserResults = ref([])
 const UserQuizes = ref(null)
+const loaded = ref(false)
 const Quizes = ref()
 const pros = ref(0)
 const OthersResults = ref([])
 const OtherQuzes = ref([])
 const UserId = usersStore.getUserId()
+const isAdm = usersStore.isAdmin
+const OthersPanel = ref(false)
 const emit = defineEmits(['score'])
+const peek = ref(false)
+const see = ref(false)
+
+function getOthersResults() {
+  /* let rezultatiLokal = JSON.parse(localStorage.getItem('AllResults'))
+  if (rezultatiLokal == null) {
+    rezultatiLokal = results.value
+  } */
+  OtherQuzes.value = []
+
+  for (let result of OthersResults.value) {
+    const someOtherUsers = []
+    const otherUser = {}
+    otherUser.id = result.id
+    otherUser.nickname = result.nickname
+    let resNo = 0
+    let subScr = 0
+    for (let quizes of result.quizes) {
+      resNo++
+      subScr += quizes.score
+      someOtherUsers.push(quizes.score.length)
+    }
+    otherUser.No = resNo
+    otherUser.pros = subScr / resNo
+    OtherQuzes.value.push(otherUser)
+  }
+  peek.value = !peek.value
+}
 
 function getResultsFromData() {
-  const rezultatiLokal = JSON.parse(localStorage.getItem('QuestionsAll'))
-  let pr = 0
+  let rezultatiLokal = JSON.parse(localStorage.getItem('AllResults'))
+  if (rezultatiLokal == null) {
+    rezultatiLokal = results.value
+  }
+  let forMediana = 0
   for (let result of rezultatiLokal) {
     if (result.id === UserId.value) {
       UserResults.value.push(result)
       UserQuizes.value = result.quizes
       for (let quiz in UserQuizes.value) {
-        const sc = UserQuizes.value[quiz].score
-        pr += sc
+        const score = UserQuizes.value[quiz].score
+        forMediana += score
       }
-      pr = pr / UserQuizes.value.length
-      pros.value = pr
+      forMediana = forMediana / UserQuizes.value.length
+      pros.value = forMediana
       Quizes.value = UserQuizes.value.length
     } else {
       OthersResults.value.push(result)
-      OtherQuzes.value.push(result.quizes)
     }
   }
 
   emit('score', pros.value)
+  OthersPanel.value = true
+  loaded.value = true
+  see.value = true
 }
-function fillBar(sc) {
-  let i = 0
-  let interval = setInterval(function () {
-    if (i < sc) {
-      // wth.value = i + 2
-      i += 2
-    } else {
-      clearInterval(interval)
-    }
-  }, 20)
-}
+
 watch(
   () => UserResults.value,
   () => {
@@ -64,42 +90,82 @@ watch(
 <template>
   <div class="Results">
     <div class="header">
-      <div class="left-side">
+      <div class="userboard">
         <h1>Hi {{ usersStore.UserName }}</h1>
         <h2>Welcome back !</h2>
         <br />
         <p>Let's see how you've progressed :</p>
-        <button class="button-main" @click="getResultsFromData">Let's take a look</button>
-        <span> You take {{ Quizes }} quizes</span>
+        <button class="button-main" @click="getResultsFromData" v-show="!loaded">
+          Let's take a look !
+        </button>
+        <button class="button-main" @click="see = !see" v-show="loaded">
+          {{ see ? ' Hide !' : " Let's take a look !" }}
+        </button>
+        <span v-show="see"> You take {{ Quizes != null ? Quizes : '0' }} quizes</span>
         <br />
       </div>
-      <div class="right-side">
+    </div>
+    <div class="dashboard" v-show="see">
+      <div v-show="UserQuizes === null">
         <div>
-          <button class="button-main">Want to see others ?</button>
-        </div>
-        <div>
-          <div><span>person 1</span><span> Resoults:</span></div>
-          <div><span>person 2</span><span> Resoults:</span></div>
+          <h3>{{ usersStore.UserName }}!</h3>
+          <p>
+            You haven't completed any Quiz yet! No Problem. Try to do some, then come back and see
+            what's new. Good luck !
+          </p>
         </div>
       </div>
-    </div>
-    <div class="dashboard">
       <div class="bars" v-for="results of UserQuizes" :key="results.no">
         <span class="span-score">{{ results.score }} % </span>
         <span class="span-date">Taken: {{ results.date }} </span>
         <div class="bar">
-          <div
-            class="fill"
-            @load="fillBar(results.score[inex])"
-            :style="{ width: results.score + '%' }"
-          ></div>
+          <div class="fill" :style="{ width: results.score + '%' }"></div>
         </div>
       </div>
       <br />
     </div>
+    <div class="othersboard" v-if="isAdm && OthersPanel">
+      <div>
+        <button class="button-main" @click="getOthersResults">
+          {{ peek ? ' Hide !' : ' Peek !' }}
+        </button>
+        <span> How others are doing ???</span>
+      </div>
+
+      <div>
+        <div class="othersResults" v-show="peek">
+          <div v-for="other of OtherQuzes" :key="other.id">
+            <span class="therm">User: {{ other.nickname }}</span>
+            <span class="therm">Quizes: {{ other.No }}</span>
+            <span class="therm">Pros: {{ other.pros.toFixed(0) }} %</span>
+            <span class="therm"
+              ><div class="outlin">
+                <div class="lin" :style="{ width: other.pros + '%' }"></div></div
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>
+.othersResults {
+  display: flex;
+  flex-direction: column;
+}
+.therm {
+  margin: 0 1rem;
+}
+.outlin {
+  height: 8px;
+  width: 250px;
+  border: 2px solid grey;
+  border-radius: 10px;
+}
+.lin {
+  height: 100%;
+  background-color: rgb(236, 184, 136);
+}
 .bar {
   display: flex;
   align-items: center;
@@ -114,15 +180,17 @@ watch(
 .header {
   display: flex;
 }
-.left-side {
+.userboard {
   width: 50%;
 }
-.right-side {
+.othersboard {
   display: flex;
-  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
 
-  margin: 3rem 0 0 6rem;
-  border: 1px solid red;
+  border: 3px solid var(--color-border);
+  border-radius: 1rem;
   width: 100%;
   height: 100%;
 }
@@ -177,13 +245,13 @@ watch(
     flex-direction: column;
     width: 380px;
   }
-  .left-side {
+  .userboard {
     display: flex;
     flex-direction: column;
     width: 300px;
   }
-  .right-side {
-    display: none;
+  .othersboard {
+    display: flex;
   }
 }
 
@@ -223,13 +291,10 @@ watch(
     flex-direction: column;
     width: 380px;
   }
-  .left-side {
+  .userboard {
     display: flex;
     flex-direction: column;
     width: 300px;
-  }
-  .right-side {
-    display: none;
   }
 }
 </style>

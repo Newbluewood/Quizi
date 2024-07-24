@@ -21,17 +21,17 @@ function toggleShow() {
     <div class="public">
       <div class="gitH link">
         <AppLink to="https://github.com/newbluewood"
-          >Github <img src="./assets/GitHub.png" alt="Github" width="50px"
+          >Github <img src="./assets/GitHub.png" alt="Github" width="40px"
         /></AppLink>
       </div>
       <div class="LinkedIn link">
         <AppLink to="https://www.linkedin.com/in/nebojsa-simovic-68258612/?originalSubdomain=rs"
-          >LinkedIn <img src="./assets/Linkedin.png" alt="LinkedIn" width="50px"
+          >LinkedIn <img src="./assets/Linkedin.png" alt="LinkedIn" width="40px"
         /></AppLink>
       </div>
       <div class="LinkedIn link">
         <AppLink to="https://www.instagram.com/newbluewood/"
-          >Instagram <img src="./assets/Insta.png" alt="Github" width="50px"
+          >Instagram <img src="./assets/Insta.png" alt="Github" width="40px"
         /></AppLink>
       </div>
     </div>
@@ -57,7 +57,9 @@ function toggleShow() {
     <div class="wrapper2">
       <RouterView v-slot="{ Component }">
         <Transition name="slide" mode="out-in">
-          <component :is="Component" :key="$route.path"></component>
+          <KeepAlive exclude="BoardView">
+            <component :is="Component" :key="$route.path"></component>
+          </KeepAlive>
         </Transition>
       </RouterView>
     </div>
@@ -76,11 +78,18 @@ function toggleShow() {
 
 <style scoped>
 .public {
+  position: absolute;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60%;
+
   padding-top: 1rem;
+  z-index: 100;
+  transform: scale(0.8);
+}
+img {
+  border-radius: 2rem;
 }
 .link {
   display: flex;
@@ -109,8 +118,9 @@ function toggleShow() {
   height: 4.5rem;
   z-index: 9999;
 }
-a {
+a:hover {
   background-color: transparent;
+  border-radius: 2rem;
 }
 .backtotop,
 .arrow {
@@ -233,6 +243,11 @@ nav {
   }
 }
 @media (max-width: 740px) {
+  .public {
+    top: 40px;
+    transform: scale(0.8);
+    z-index: 300;
+  }
   header {
     position: sticky;
     top: 5px;
@@ -254,8 +269,7 @@ nav {
 }
 @media (max-width: 380px) {
   .public {
-    display: absolute;
-
+    top: 40px;
     transform: scale(0.5);
     z-index: 300;
   }

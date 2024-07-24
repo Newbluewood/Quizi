@@ -8,7 +8,7 @@ export const useQuizStore = defineStore('Quiz', () => {
 
   let questionsFetched = []
   let AllQuestions = []
-  let results = []
+  let results = ref([])
 
   const chosenQuestions = ref([])
   const NoOfQuestions = ref(10)
@@ -113,13 +113,16 @@ export const useQuizStore = defineStore('Quiz', () => {
   function setQuestions() {
     isEnd.value = true
     fillAllQuestions()
+    if (start.value === false) {
+      getQuestions()
+    }
   }
 
   // shake and chose 10 from All
 
   function getQuestions() {
     chosenQuestions.value = []
-    results = []
+    results.value = []
     isChecked.value = []
     isEnd.value = false
     start.value = true
@@ -139,7 +142,7 @@ export const useQuizStore = defineStore('Quiz', () => {
 
   function resaultsState() {
     for (let result of chosenQuestions.value) {
-      results.push({
+      results.value.push({
         id: result.id,
         correctAnsw: result.correct,
         isCorrect: ref(false),
@@ -147,23 +150,24 @@ export const useQuizStore = defineStore('Quiz', () => {
         points: ref(0)
       })
     }
+    console.log(results)
   }
 
-  function eventsManager(elementId, elementKey, elementIndex) {
-    console.log('id: ', elementId, ', key:', elementKey, ', index: ', elementIndex) // Checkout !!
+  function eventsManager(elementId, elementKey /* elementIndex */) {
+    // console.log('id: ', elementId, ', key:', elementKey, ', index: ', elementIndex) // Checkout !!
 
     isChecked.value.splice(elementId - 1, 1, elementKey)
-    for (let corection of results) {
-      console.log('corection', corection.id, elementId)
+    for (let corection of results.value) {
       if (corection.id === elementId) {
         corection.correctAnsw === elementKey
-          ? ((corection.isCorrect.value = true), (corection.points.value = corection.pointsValue))
-          : ((corection.isCorrect.value = false), (corection.points.value = 0))
+          ? ((corection.isCorrect = true), (corection.points = corection.pointsValue))
+          : ((corection.isCorrect = false), (corection.points = 0))
       }
     }
   }
   function getResoults() {
-    return results
+    console.log('RV', results.value[0].isCorrect)
+    return results.value
   }
 
   function setIsInFocus() {
@@ -201,6 +205,13 @@ export const useQuizStore = defineStore('Quiz', () => {
       randomArray.push(AllQuestions[i])
     }
     return randomArray
+  }
+  function getOut() {
+    chosenQuestions.value = []
+    isEnd.value = false
+    isFocused.value = false
+    isFetched.value = false
+    start.value = false
   }
 
   // Focused/All - Carousel Show
@@ -253,6 +264,7 @@ export const useQuizStore = defineStore('Quiz', () => {
     getResoults,
     getActiveSlide,
     ShuffleTheArray,
-    PickTheQuestions
+    PickTheQuestions,
+    getOut
   }
 })

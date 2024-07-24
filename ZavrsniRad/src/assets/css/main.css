@@ -82,7 +82,7 @@ a,
   color: rgb(62, 61, 61);
 }
 button:hover {
-  background-color: rgba(227, 227, 227, 0.2);
+  background-color: var(--color-other);
 }
 
 @media (hover: hover) {

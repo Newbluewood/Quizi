@@ -7,6 +7,7 @@ export const useUsersStore = defineStore('Users', () => {
   const results = [
     {
       id: 1,
+      nickname: 'Administrator',
       quizes: [
         { no: 1, date: ' today ', score: 30 },
         { no: 2, date: ' today ', score: 10 }
@@ -14,6 +15,7 @@ export const useUsersStore = defineStore('Users', () => {
     },
     {
       id: 2,
+      nickname: 'Milica',
       quizes: [
         { no: 1, date: ' today ', score: 40 },
         { no: 2, date: ' today ', score: 100 }
@@ -21,6 +23,7 @@ export const useUsersStore = defineStore('Users', () => {
     },
     {
       id: 3,
+      nickname: 'Pera',
       quizes: [
         { no: 1, date: ' today ', score: 100 },
         { no: 2, date: ' today ', score: 80 }
@@ -28,8 +31,9 @@ export const useUsersStore = defineStore('Users', () => {
     }
   ]
   const RESOULTS = ref(results)
-
-  sessionStorage.setItem('AllResults', JSON.stringify(results))
+  if (localStorage.getItem('AllResults') === null) {
+    localStorage.setItem('AllResults', JSON.stringify(results))
+  }
 
   // data / state //
 
@@ -53,6 +57,9 @@ export const useUsersStore = defineStore('Users', () => {
   }
   function getUserId() {
     return UserId
+  }
+  function getUserName() {
+    return UserName.value
   }
   function getRESOULTS() {
     return RESOULTS.value
@@ -107,6 +114,7 @@ export const useUsersStore = defineStore('Users', () => {
     getRESOULTS,
     checkUserData,
     logout,
-    getUserId
+    getUserId,
+    getUserName
   }
 })
