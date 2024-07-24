@@ -45,12 +45,11 @@ function hideNawbar() {
 }
 .nav > a {
   border: 1px solid black;
-  padding: 0 2rem;
+  padding: 0.4rem 2rem;
   text-align: center;
-  margin: 4px;
+  margin: 2px;
   width: 100%;
   font-size: 1.3rem;
-  height: 50px;
 }
 .navBurger {
   font-size: 1.3rem;
@@ -75,7 +74,7 @@ function hideNawbar() {
     border: none;
   }
   .nav.mobile {
-    display: none;
+    opacity: 0;
   }
   .navWrapper {
     display: flex;
@@ -91,6 +90,10 @@ function hideNawbar() {
   }
 }
 @media (max-width: 380px) {
+  .nav > a {
+    margin: 4px 0;
+    padding: 1px 0;
+  }
   .nav.wide {
     display: none;
   }

@@ -37,12 +37,15 @@ function toggleShow() {
     </div>
   </div>
   <div class="App">
-    <div class="info">
-      <info />
+    <div>
+      <div class="info">
+        <info />
+      </div>
+      <div class="LoginBoard">
+        <LoginBoard />
+      </div>
     </div>
-    <div class="LoginBoard">
-      <LoginBoard />
-    </div>
+
     <header class="header">
       <div class="logo"></div>
       <div class="switchButton">
@@ -135,13 +138,15 @@ a:hover {
   bottom: 15px;
   cursor: pointer;
   font-size: 20px;
-  z-index: 9998;
+  z-index: 150;
 }
 .arrow:hover {
   transform: rotate(90deg);
   transition: all 0.5 s;
 }
 .LoginBoard {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 6px;
   right: 10px;

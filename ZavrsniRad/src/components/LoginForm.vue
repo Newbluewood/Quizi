@@ -44,6 +44,7 @@ watch(
 )
 
 function logs() {
+  usersStore.isLoggedIn = false
   usersStore.checkUserData(trimUsername.value, trimPassword.value)
 }
 </script>
@@ -88,8 +89,8 @@ function logs() {
   cursor: pointer;
   caret-color: transparent;
   padding-right: 1rem;
+  background-color: var(--color-background-soft);
   margin-bottom: 1rem;
-  background-color: var(--color-background-mute);
 }
 .form,
 .login {

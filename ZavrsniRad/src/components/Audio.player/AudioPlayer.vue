@@ -1,8 +1,4 @@
 <script setup>
-/*const prefersLightTheme = window.matchMedia('(prefers-color-scheme: light)').matches;
-    const mediaQuery = prefersLightTheme ? '(prefers-color-scheme: light)' : '(prefers-color-scheme: dark)';
-    const styleSheet = document.styleSheets[0]; // Pretpostavka da je prvi stilski list vašeg dokumenta*/
-
 import { ref, watch } from 'vue'
 
 const buttons = [
@@ -16,62 +12,61 @@ const buttons = [
 ]
 
 const tracks = [
-  /* { "id": 0, "artist":"none", "track": "None", "track_url": "../src/assets/audioTracks/badass.mp3", "cover":"../src/assets/covers/Cover10.jpg" },*/
   {
     id: 0,
     artist: 'Benjamin Tissot',
     track: 'Badas',
-    track_url: '../src/assets/audioTracks/badass.mp3',
-    cover: '../src/assets/covers/Cover1.jpg'
+    track_url: '/public/audioTracks/badass.mp3',
+    cover: '/public/covers/Cover1.jpg'
   },
   {
     id: 1,
     artist: 'Benjamin Tissot',
     track: 'Dance',
-    track_url: '../src/assets/audioTracks/dance.mp3',
-    cover: '../src/assets/covers/Cover2.jpg'
+    track_url: '/public/audioTracks/dance.mp3',
+    cover: '/public/covers/Cover2.jpg'
   },
   {
     id: 2,
     artist: 'Benjamin Tissot',
     track: 'Downtown',
-    track_url: '../src/assets/audioTracks/downtown.mp3',
-    cover: '../src/assets/covers/Cover3.jpg'
+    track_url: '/public/audioTracks/downtown.mp3',
+    cover: '/public/covers/Cover3.jpg'
   },
   {
     id: 3,
     artist: 'Benjamin Tissot',
     track: 'Dub Step',
-    track_url: '../src/assets/audioTracks/dubstep.mp3',
-    cover: '../src/assets/covers/Cover4.jpg'
+    track_url: '/public/audioTracks/dubstep.mp3',
+    cover: '/public/covers/Cover4.jpg'
   },
   {
     id: 4,
     artist: 'Benjamin Tissot',
     track: 'Extreme Action',
-    track_url: '../src/assets/audioTracks/extremeaction.mp3',
-    cover: '../src/assets/covers/Cover6.jpg'
+    track_url: '/public/audioTracks/extremeaction.mp3',
+    cover: '/public/covers/Cover6.jpg'
   },
   {
     id: 5,
     artist: 'Benjamin Tissot',
     track: 'Funky Suspense',
-    track_url: '../src/assets/audioTracks/funkysuspense.mp3',
-    cover: '../src/assets/covers/Cover7.jpg'
+    track_url: '/public/audioTracks/funkysuspense.mp3',
+    cover: '/public/covers/Cover7.jpg'
   },
   {
     id: 6,
     artist: 'Benjamin Tissot',
     track: 'High Octane',
-    track_url: '../src/assets/audioTracks/highoctane.mp3',
-    cover: '../src/assets/covers/Cover8.jpg'
+    track_url: '/public/audioTracks/highoctane.mp3',
+    cover: '/public/covers/Cover8.jpg'
   },
   {
     id: 7,
     artist: 'Benjamin Tissot',
     track: 'Moose',
-    track_url: '../src/assets/audioTracks/moose.mp3',
-    cover: '../src/assets/covers/Cover9.jpg'
+    track_url: '/public/audioTracks/moose.mp3',
+    cover: '/public/covers/Cover9.jpg'
   }
 ]
 
@@ -339,6 +334,7 @@ function switchMute() {
   border: 1px solid rgba(239, 158, 7, 0.5);
   padding: 0.5rem;
   background-color: var(--color-background);
+  z-index: 900;
 }
 .controls {
   display: grid;
@@ -418,11 +414,12 @@ function switchMute() {
 }
 .progres_line {
   background: rgba(92, 95, 95, 0.6);
-  background-color: rgba(68, 46, 3, 0.9);
+  background-color: var(--color-border-hover);
   height: 1.4rem;
   width: 0;
   position: absolute;
   z-index: -10px;
+  caret-color: transparent;
 }
 .status div {
   position: absolute;

@@ -47,23 +47,18 @@ function ispisSlova(message) {
 </template>
 <style scoped>
 .DivText {
-  width: 60vw;
+  width: 80vw;
   height: 6rem;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-top: 2rem;
 }
 .SpanText {
+  text-align: center;
   width: 100%;
   height: 100%;
-  font-size: 34px;
-}
-@media (max-width: 380px) {
-  .SpanText {
-    width: 100%;
-    height: 100%;
-    font-size: 24px;
-  }
+  font-size: 30px;
 }
 </style>

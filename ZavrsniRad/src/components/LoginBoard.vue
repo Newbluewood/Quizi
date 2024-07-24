@@ -61,9 +61,9 @@ watch(
   cursor: pointer;
   caret-color: transparent;
   width: fit-content;
+  margin-left: 8rem;
 }
 .showPanel {
-  margin-right: 2rem;
   margin-top: 1rem;
   border: 2px solid rgba(151, 151, 151, 0.2);
   border-radius: 1rem;
@@ -72,8 +72,10 @@ watch(
   align-items: center;
   width: fit-content;
   padding: 1rem;
-
-  background-color: var(--color-background-soft);
+  position: absolute;
+  top: 110px;
+  right: 50px;
+  background-color: var(--color-background-mute);
 }
 span {
   padding: 0 0rem;
@@ -81,7 +83,6 @@ span {
 .wrapper {
   display: flex;
   flex-direction: column;
-  margin-right: 1rem;
 }
 h3 {
   padding: 0 0.5rem;

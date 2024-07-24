@@ -33,6 +33,7 @@ function ManageWarn(thrutines) {
     if (notAnswered.value.length === 0) {
       quizState.isEnd = true
       createScoreStamp()
+      quizState.isFocused = false
     } else {
       getOut()
     }
@@ -91,7 +92,7 @@ function createScoreStamp() {
     newUserTemplate.quizes = []
     const newQuiz = {}
     newQuiz.no = 1
-    newQuiz.date = 'today_now'
+    newQuiz.date = getDateStamp()
     newQuiz.score = points.value
     console.log('points', points.value)
     newUserTemplate.quizes.push(newQuiz)
@@ -120,7 +121,7 @@ function finishChecker() {
   if (notAnswered.value.length == 0) {
     console.log('notAnswered', notAnswered.value.length) // Checkouts !! //
     showWarn.value = true
-    WarnMesage.value = ' Are you shure abouth that ??? '
+    WarnMesage.value = ' OK. All is checked ! See results ??? '
   }
 
   for (let rezultat of quizState.getResoults()) {
@@ -596,6 +597,10 @@ watch(
     align-items: center;
     position: fixed;
     top: 170px;
+  }
+  .Answers {
+    width: 100%;
+    height: fit-content;
   }
 }
 @media (max-width: 380px) {
