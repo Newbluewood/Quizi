@@ -1,17 +1,25 @@
 <script setup>
-import { ref } from 'vue'
-import AppLink from './AppLink.vue'
-const IsVisible = ref(false)
+import { ref } from "vue";
+import AppLink from "./AppLink.vue";
+const IsVisible = ref(false);
 
 function hideNawbar() {
-  IsVisible.value = !IsVisible.value
+  IsVisible.value = !IsVisible.value;
 }
 </script>
 
 <template>
   <div class="navWrapper">
-    <div class="navBurger icon-th-list" @click="hideNawbar()" v-show="!IsVisible"></div>
-    <div class="navBurger icon-cancel" @click="hideNawbar()" v-show="IsVisible"></div>
+    <div
+      class="navBurger icon-th-list"
+      @click="hideNawbar()"
+      v-show="!IsVisible"
+    ></div>
+    <div
+      class="navBurger icon-cancel"
+      @click="hideNawbar()"
+      v-show="IsVisible"
+    ></div>
     <div class="nav mobile" v-show="IsVisible">
       <AppLink to="/">Home</AppLink>
       <AppLink to="/about">About</AppLink>

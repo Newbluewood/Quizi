@@ -1,234 +1,252 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch } from "vue";
 
 const buttons = [
-  { id: 'play', ico: 'icon-play', visible: ref(true) },
-  { id: 'pause', ico: 'icon-pause', visible: ref(false) },
-  { id: 'stop', ico: 'icon-stop', visible: ref(true) },
-  { id: 'prew', ico: 'icon-left-open', visible: ref(true) },
-  { id: 'rew', ico: 'icon-rewind', visible: ref(true) },
-  { id: 'forw', ico: 'icon-fast-fw', visible: ref(true) },
-  { id: 'next', ico: 'icon-right-open', visible: ref(true) }
-]
+  { id: "play", ico: "icon-play", visible: ref(true) },
+  { id: "pause", ico: "icon-pause", visible: ref(false) },
+  { id: "stop", ico: "icon-stop", visible: ref(true) },
+  { id: "prew", ico: "icon-left-open", visible: ref(true) },
+  { id: "rew", ico: "icon-rewind", visible: ref(true) },
+  { id: "forw", ico: "icon-fast-fw", visible: ref(true) },
+  { id: "next", ico: "icon-right-open", visible: ref(true) },
+];
 
 const tracks = [
   {
     id: 0,
-    artist: 'Benjamin Tissot',
-    track: 'Badas',
-    track_url: '/public/audioTracks/badass.mp3',
-    cover: '/public/covers/Cover1.jpg'
+    artist: "Benjamin Tissot",
+    track: "Badas",
+    track_url: "/public/audioTracks/badass.mp3",
+    cover: "/public/covers/Cover1.jpg",
   },
   {
     id: 1,
-    artist: 'Benjamin Tissot',
-    track: 'Dance',
-    track_url: '/public/audioTracks/dance.mp3',
-    cover: '/public/covers/Cover2.jpg'
+    artist: "Benjamin Tissot",
+    track: "Dance",
+    track_url: "/public/audioTracks/dance.mp3",
+    cover: "/public/covers/Cover2.jpg",
   },
   {
     id: 2,
-    artist: 'Benjamin Tissot',
-    track: 'Downtown',
-    track_url: '/public/audioTracks/downtown.mp3',
-    cover: '/public/covers/Cover3.jpg'
+    artist: "Benjamin Tissot",
+    track: "Downtown",
+    track_url: "/public/audioTracks/downtown.mp3",
+    cover: "/public/covers/Cover3.jpg",
   },
   {
     id: 3,
-    artist: 'Benjamin Tissot',
-    track: 'Dub Step',
-    track_url: '/public/audioTracks/dubstep.mp3',
-    cover: '/public/covers/Cover4.jpg'
+    artist: "Benjamin Tissot",
+    track: "Dub Step",
+    track_url: "/public/audioTracks/dubstep.mp3",
+    cover: "/public/covers/Cover4.jpg",
   },
   {
     id: 4,
-    artist: 'Benjamin Tissot',
-    track: 'Extreme Action',
-    track_url: '/public/audioTracks/extremeaction.mp3',
-    cover: '/public/covers/Cover6.jpg'
+    artist: "Benjamin Tissot",
+    track: "Extreme Action",
+    track_url: "/public/audioTracks/extremeaction.mp3",
+    cover: "/public/covers/Cover6.jpg",
   },
   {
     id: 5,
-    artist: 'Benjamin Tissot',
-    track: 'Funky Suspense',
-    track_url: '/public/audioTracks/funkysuspense.mp3',
-    cover: '/public/covers/Cover7.jpg'
+    artist: "Benjamin Tissot",
+    track: "Funky Suspense",
+    track_url: "/public/audioTracks/funkysuspense.mp3",
+    cover: "/public/covers/Cover7.jpg",
   },
   {
     id: 6,
-    artist: 'Benjamin Tissot',
-    track: 'High Octane',
-    track_url: '/public/audioTracks/highoctane.mp3',
-    cover: '/public/covers/Cover8.jpg'
+    artist: "Benjamin Tissot",
+    track: "High Octane",
+    track_url: "/public/audioTracks/highoctane.mp3",
+    cover: "/public/covers/Cover8.jpg",
   },
   {
     id: 7,
-    artist: 'Benjamin Tissot',
-    track: 'Moose',
-    track_url: '/public/audioTracks/moose.mp3',
-    cover: '/public/covers/Cover9.jpg'
-  }
-]
+    artist: "Benjamin Tissot",
+    track: "Moose",
+    track_url: "/public/audioTracks/moose.mp3",
+    cover: "/public/covers/Cover9.jpg",
+  },
+];
 
-let totalTrackTime = ref('00:00')
-let curentTrackTime = ref('00:00')
-let volume = ref(60)
-let progresLine = ref(0)
-let isPaused = ref(false)
-let trackId = ref(0)
-let warn = ref('PAUSED !')
-let currentTrack = new Audio(tracks[trackId.value].track_url)
+let totalTrackTime = ref("00:00");
+let curentTrackTime = ref("00:00");
+let volume = ref(60);
+let progresLine = ref(0);
+let isPaused = ref(false);
+let trackId = ref(0);
+let warn = ref("PAUSED !");
+let currentTrack = new Audio(tracks[trackId.value].track_url);
 
-addEventListener('DOMContentLoaded', () => {
-  changeTrack(trackId.value)
-})
-let showCover = ref(false)
-let showList = ref(false)
-let minimizer = ref(true)
-let isMuted = ref(false)
+addEventListener("DOMContentLoaded", () => {
+  changeTrack(trackId.value);
+});
+let showCover = ref(false);
+let showList = ref(false);
+let minimizer = ref(true);
+let isMuted = ref(false);
 
 function convertSecounds(seconds) {
-  let sekunde = Math.round(seconds) % 60
-  let minuti = Math.floor(seconds / 60) % 60
+  let sekunde = Math.round(seconds) % 60;
+  let minuti = Math.floor(seconds / 60) % 60;
 
-  let vreme = (minuti < 10 ? '0' + minuti : minuti) + ':' + (sekunde < 10 ? '0' + sekunde : sekunde)
-  return vreme
+  let vreme =
+    (minuti < 10 ? "0" + minuti : minuti) +
+    ":" +
+    (sekunde < 10 ? "0" + sekunde : sekunde);
+  return vreme;
 }
 
 function changeTrack(id) {
-  trackId.value = id
-  playControls('stop')
-  progresLine.value = 0
-  currentTrack = new Audio(tracks[id].track_url)
+  trackId.value = id;
+  playControls("stop");
+  progresLine.value = 0;
+  currentTrack = new Audio(tracks[id].track_url);
   ////playControls("play")
 
   watch(
     () => volume.value,
     () => {
       if (!isMuted.value) {
-        sessionStorage.setItem('volume', volume.value / 100)
+        sessionStorage.setItem("volume", volume.value / 100);
       }
-      currentTrack.volume = volume.value / 100
+      currentTrack.volume = volume.value / 100;
     }
-  )
+  );
 
-  currentTrack.addEventListener('loadedmetadata', () => {
-    const rawTrackTime = currentTrack.duration
-    totalTrackTime.value = convertSecounds(rawTrackTime)
-  })
+  currentTrack.addEventListener("loadedmetadata", () => {
+    const rawTrackTime = currentTrack.duration;
+    totalTrackTime.value = convertSecounds(rawTrackTime);
+  });
 
-  currentTrack.addEventListener('timeupdate', () => {
-    let rawTrackTime = 0
-    rawTrackTime = currentTrack.currentTime
-    curentTrackTime.value = convertSecounds(rawTrackTime)
-    progresLine.value = ((currentTrack.currentTime / currentTrack.duration) * 100).toFixed(2) + '%'
-    if (currentTrack.currentTime == currentTrack.duration && trackId.value < tracks.length - 1) {
-      playControls('stop')
-      trackId.value++
-      changeTrack(trackId.value)
-      playControls('play')
+  currentTrack.addEventListener("timeupdate", () => {
+    let rawTrackTime = 0;
+    rawTrackTime = currentTrack.currentTime;
+    curentTrackTime.value = convertSecounds(rawTrackTime);
+    progresLine.value =
+      ((currentTrack.currentTime / currentTrack.duration) * 100).toFixed(2) +
+      "%";
+    if (
+      currentTrack.currentTime == currentTrack.duration &&
+      trackId.value < tracks.length - 1
+    ) {
+      playControls("stop");
+      trackId.value++;
+      changeTrack(trackId.value);
+      playControls("play");
     }
-  })
+  });
 }
 
 function switchPlayButton(isPlay) {
   if (isPlay) {
-    buttons[0].visible.value = false
-    buttons[1].visible.value = true
-    currentTrack.play()
-    currentTrack.volume = sessionStorage.getItem('volume')
-    isPaused.value = false
+    buttons[0].visible.value = false;
+    buttons[1].visible.value = true;
+    currentTrack.play();
+    currentTrack.volume = sessionStorage.getItem("volume");
+    isPaused.value = false;
   } else {
-    buttons[0].visible.value = true
-    buttons[1].visible.value = false
-    currentTrack.pause()
+    buttons[0].visible.value = true;
+    buttons[1].visible.value = false;
+    currentTrack.pause();
   }
 }
 
 function progresSet(event) {
-  console.log('event-k: ', ((event.x - 15) / event.target.getBoundingClientRect().width).toFixed(2))
-  console.log('e.target: ', event.layerX, event.target.getBoundingClientRect().width)
+  console.log(
+    "event-k: ",
+    ((event.x - 15) / event.target.getBoundingClientRect().width).toFixed(2)
+  );
+  console.log(
+    "e.target: ",
+    event.layerX,
+    event.target.getBoundingClientRect().width
+  );
   progresLine.value =
-    ((event.layerX / event.target.getBoundingClientRect().width) * 100).toFixed(2) + '%'
+    ((event.layerX / event.target.getBoundingClientRect().width) * 100).toFixed(
+      2
+    ) + "%";
   currentTrack.currentTime =
-    currentTrack.duration * (event.layerX / event.target.getBoundingClientRect().width)
+    currentTrack.duration *
+    (event.layerX / event.target.getBoundingClientRect().width);
 }
 
 function playControls(id) {
   switch (id) {
-    case 'play': {
-      switchPlayButton(true)
-      break
+    case "play": {
+      switchPlayButton(true);
+      break;
     }
-    case 'pause': {
-      switchPlayButton(false)
-      isPaused.value = true
-      break
+    case "pause": {
+      switchPlayButton(false);
+      isPaused.value = true;
+      break;
     }
-    case 'stop': {
-      switchPlayButton(false)
-      isPaused.value = false
-      currentTrack.currentTime = 0
-      break
+    case "stop": {
+      switchPlayButton(false);
+      isPaused.value = false;
+      currentTrack.currentTime = 0;
+      break;
     }
-    case 'forw': {
+    case "forw": {
       currentTrack.currentTime + 5 > currentTrack.duration
         ? (switchPlayButton(false), (currentTrack.currentTime = 0))
-        : (currentTrack.currentTime += 5)
-      break
+        : (currentTrack.currentTime += 5);
+      break;
     }
-    case 'rew': {
+    case "rew": {
       currentTrack.currentTime < 5
         ? (switchPlayButton(false), (currentTrack.currentTime = 0))
-        : (currentTrack.currentTime -= 5)
-      break
+        : (currentTrack.currentTime -= 5);
+      break;
     }
-    case 'prew': {
+    case "prew": {
       if (trackId.value >= 1) {
-        changeTrack(trackId.value - 1)
+        changeTrack(trackId.value - 1);
       }
-      break
+      break;
     }
-    case 'next': {
+    case "next": {
       if (trackId.value < tracks.length - 1) {
-        changeTrack(trackId.value + 1)
+        changeTrack(trackId.value + 1);
       } else {
-        isPaused.value = false
-        currentTrack.currentTime = 0
+        isPaused.value = false;
+        currentTrack.currentTime = 0;
       }
-      break
+      break;
     }
   }
   //console.log("event: ", id)
   //console.log("track.length: ", tracks.length, trackId.value )
   if (currentTrack.currentTime == currentTrack.duration) {
-    warn.value = 'End of list'
+    warn.value = "End of list";
     // changeTrack(0)
   }
 }
 
 function toggleList() {
-  showList.value = !showList.value
-  showCover.value = false
+  showList.value = !showList.value;
+  showCover.value = false;
 }
 function toggleCover() {
-  showCover.value = !showCover.value
-  showList.value = false
+  showCover.value = !showCover.value;
+  showList.value = false;
 }
 function minimize() {
-  showCover.value = false
-  showList.value = false
-  minimizer.value = !minimizer.value
+  showCover.value = false;
+  showList.value = false;
+  minimizer.value = !minimizer.value;
 }
 function switchMute() {
   if (!isMuted.value) {
-    currentTrack.volume = 0
-    volume.value = 0
+    currentTrack.volume = 0;
+    volume.value = 0;
   } else {
-    currentTrack.volume = sessionStorage.getItem('volume')
-    volume.value = sessionStorage.getItem('volume') * 100
+    currentTrack.volume = sessionStorage.getItem("volume");
+    volume.value = sessionStorage.getItem("volume") * 100;
   }
-  isMuted.value = !isMuted.value
+  isMuted.value = !isMuted.value;
 }
 </script>
 
@@ -292,7 +310,13 @@ function switchMute() {
           @click="switchMute"
           v-show="isMuted"
         ></i>
-        <input type="range" id="volume-bar" min="0" max="100" v-model="volume" />
+        <input
+          type="range"
+          id="volume-bar"
+          min="0"
+          max="100"
+          v-model="volume"
+        />
       </div>
     </div>
     <div class="controls">
@@ -318,7 +342,8 @@ function switchMute() {
         v-for="track of tracks"
         :key="track.id"
       >
-        <b class="artist"> - {{ track.artist }}</b> <i class="track_name"> - - {{ track.track }}</i>
+        <b class="artist"> - {{ track.artist }}</b>
+        <i class="track_name"> - - {{ track.track }}</i>
       </div>
     </div>
   </div>

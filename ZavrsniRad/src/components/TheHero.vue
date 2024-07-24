@@ -1,41 +1,41 @@
 <script setup>
-import { ref } from 'vue'
-const message1 = ' Hello !'
-const message2 = ' Wellcome, and enjoy the Quiz...'
-const alfa = ref('')
-document.addEventListener('DOMContentLoaded', () => {
+import { ref } from "vue";
+const message1 = " Hello !";
+const message2 = " Wellcome, and enjoy the Quiz...";
+const alfa = ref("");
+document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
-    ispisSlova(message1)
-  }, 500)
+    ispisSlova(message1);
+  }, 500);
 
-  alfa.value = ''
+  alfa.value = "";
 
-  let a = 0
+  let a = 0;
   let interval = setInterval(function () {
     if (a < 5) {
       setTimeout(() => {
-        ispisSlova(message2)
-      }, 500)
-      alfa.value = ''
+        ispisSlova(message2);
+      }, 500);
+      alfa.value = "";
     } else {
-      clearInterval(interval)
+      clearInterval(interval);
     }
-    a++
-  }, 10000)
-})
+    a++;
+  }, 10000);
+});
 
 function ispisSlova(message) {
-  const tekst = message
-  let i = 0
+  const tekst = message;
+  let i = 0;
 
   let interval = setInterval(function () {
     if (i < tekst.length) {
-      alfa.value += tekst.charAt(i)
-      i++
+      alfa.value += tekst.charAt(i);
+      i++;
     } else {
-      clearInterval(interval)
+      clearInterval(interval);
     }
-  }, 50)
+  }, 50);
 }
 </script>
 <template>

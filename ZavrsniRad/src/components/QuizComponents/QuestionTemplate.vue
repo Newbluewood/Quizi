@@ -1,136 +1,140 @@
 <script setup>
-import '../../assets/css/quiz.css'
-import { watch, ref } from 'vue'
-import { useQuizStore } from '@/stores/Quiz'
-import { useUsersStore } from '@/stores/User'
-import ThePopUp from './ThePopUp.vue'
-import TheModalWarn from '../QuizComponents/TheModalWarn.vue'
+import "../../assets/css/quiz.css";
+import { watch, ref } from "vue";
+import { useQuizStore } from "@/stores/Quiz";
+import { useUsersStore } from "@/stores/User";
+import ThePopUp from "./ThePopUp.vue";
+import TheModalWarn from "../QuizComponents/TheModalWarn.vue";
 
 // Quiz props  //
-const quizState = useQuizStore()
-const usersStore = useUsersStore()
-let Questions = ref([])
-const points = ref(0)
-const endy = ref(false)
-const notAnswered = ref([])
-const UserId = usersStore.getUserId()
+const quizState = useQuizStore();
+const usersStore = useUsersStore();
+let Questions = ref([]);
+const points = ref(0);
+const endy = ref(false);
+const notAnswered = ref([]);
+const UserId = usersStore.getUserId();
 
 // PopUp/Modal - props //
 
-const showPopup = ref(false)
-const showWarn = ref(false)
-const popupMesage = ref('')
-const WarnMesage = ref('')
-const WarnProp = ref(false)
+const showPopup = ref(false);
+const showWarn = ref(false);
+const popupMesage = ref("");
+const WarnMesage = ref("");
+const WarnProp = ref(false);
 
 function ManagePopup() {
-  showPopup.value = false
+  showPopup.value = false;
 }
 function ManageWarn(thrutines) {
-  showWarn.value = false
-  WarnProp.value = thrutines
+  showWarn.value = false;
+  WarnProp.value = thrutines;
   if (WarnProp.value) {
     if (notAnswered.value.length === 0) {
-      quizState.isEnd = true
-      createScoreStamp()
-      quizState.isFocused = false
+      quizState.isEnd = true;
+      createScoreStamp();
+      quizState.isFocused = false;
     } else {
-      getOut()
+      getOut();
     }
   }
-  notAnswered.value = []
-  points.value = 0
+  notAnswered.value = [];
+  points.value = 0;
 }
 
 // Methods
 
 function getOut() {
-  quizState.getOut()
+  quizState.getOut();
 }
 
 function getDateStamp() {
-  const date = new Date()
-  const PYear = date.getFullYear()
-  const PMonth = date.getMonth()
-  const PDate = date.getDate()
-  const PHour = date.getHours()
-  const PMinutes = date.getMinutes()
+  const date = new Date();
+  const PYear = date.getFullYear();
+  const PMonth = date.getMonth();
+  const PDate = date.getDate();
+  const PHour = date.getHours();
+  const PMinutes = date.getMinutes();
 
-  const utcDate = new Date(Date.UTC(PYear, PMonth, PDate, PHour, PMinutes)).toUTCString()
-  return utcDate
+  const utcDate = new Date(
+    Date.UTC(PYear, PMonth, PDate, PHour, PMinutes)
+  ).toUTCString();
+  return utcDate;
 }
 
 function createScoreStamp() {
-  const scoreStamp = {}
+  const scoreStamp = {};
   /* let AllRes = usersStore.getRESOULTS()
   console.log('ALL RESOULTS, get', AllRes)
   const AllResults = AllRes*/
-  const AllRes = localStorage.getItem('AllResults')
-  const AllResults = JSON.parse(AllRes)
+  const AllRes = localStorage.getItem("AllResults");
+  const AllResults = JSON.parse(AllRes);
 
   if (UserId.value != 0) {
     for (let result of AllResults) {
       if (result.id === UserId.value) {
-        const UserQuizes = ref([])
-        const NoofQuizes = ref(0)
-        UserQuizes.value = result.quizes
-        NoofQuizes.value = UserQuizes.value.length
-        console.log('UserQuizes', UserQuizes.value)
-        scoreStamp.no = NoofQuizes.value + 1
-        scoreStamp.date = getDateStamp()
-        scoreStamp.score = points.value
-        UserQuizes.value.push(scoreStamp)
-        console.log('New1: ', AllResults)
-        usersStore.RESOULTS = AllResults
-        localStorage.setItem('AllResults', JSON.stringify(AllResults))
-        return
+        const UserQuizes = ref([]);
+        const NoofQuizes = ref(0);
+        UserQuizes.value = result.quizes;
+        NoofQuizes.value = UserQuizes.value.length;
+        console.log("UserQuizes", UserQuizes.value);
+        scoreStamp.no = NoofQuizes.value + 1;
+        scoreStamp.date = getDateStamp();
+        scoreStamp.score = points.value;
+        UserQuizes.value.push(scoreStamp);
+        console.log("New1: ", AllResults);
+        usersStore.RESOULTS = AllResults;
+        localStorage.setItem("AllResults", JSON.stringify(AllResults));
+        return;
       }
     }
-    const newUserTemplate = {}
-    newUserTemplate.id = UserId.value
-    newUserTemplate.nickname = usersStore.UserName
-    newUserTemplate.quizes = []
-    const newQuiz = {}
-    newQuiz.no = 1
-    newQuiz.date = getDateStamp()
-    newQuiz.score = points.value
-    console.log('points', points.value)
-    newUserTemplate.quizes.push(newQuiz)
-    console.log('New2: ', AllResults)
-    AllResults.push(newUserTemplate)
-    usersStore.RESOULTS = AllResults
-    localStorage.setItem('AllResults', JSON.stringify(AllResults))
+    const newUserTemplate = {};
+    newUserTemplate.id = UserId.value;
+    newUserTemplate.nickname = usersStore.UserName;
+    newUserTemplate.quizes = [];
+    const newQuiz = {};
+    newQuiz.no = 1;
+    newQuiz.date = getDateStamp();
+    newQuiz.score = points.value;
+    console.log("points", points.value);
+    newUserTemplate.quizes.push(newQuiz);
+    console.log("New2: ", AllResults);
+    AllResults.push(newUserTemplate);
+    usersStore.RESOULTS = AllResults;
+    localStorage.setItem("AllResults", JSON.stringify(AllResults));
   } else {
-    console.log('not Loged User')
+    console.log("not Loged User");
   }
 }
 
 function finishChecker() {
   for (let i = 0; i <= quizState.isChecked.length; i++) {
     if (quizState.isChecked[i] === null) {
-      notAnswered.value.push(i + 1)
+      notAnswered.value.push(i + 1);
     }
   }
   if (notAnswered.value.length != 0) {
-    console.log('notAnswered', notAnswered.value.length) // Checkouts !! //
-    showWarn.value = true
+    console.log("notAnswered", notAnswered.value.length); // Checkouts !! //
+    showWarn.value = true;
     WarnMesage.value =
-      " You didn't answer on Question: \n " + notAnswered.value + ' Are you shure abouth that ??? '
+      " You didn't answer on Question: \n " +
+      notAnswered.value +
+      " Are you shure abouth that ??? ";
   }
 
   if (notAnswered.value.length == 0) {
-    console.log('notAnswered', notAnswered.value.length) // Checkouts !! //
-    showWarn.value = true
-    WarnMesage.value = ' OK. All is checked ! See results ??? '
+    console.log("notAnswered", notAnswered.value.length); // Checkouts !! //
+    showWarn.value = true;
+    WarnMesage.value = " OK. All is checked ! See results ??? ";
   }
 
   for (let rezultat of quizState.getResoults()) {
-    console.log('PV', points.value)
-    console.log('rezultat', rezultat.points)
-    points.value += rezultat.points
+    console.log("PV", points.value);
+    console.log("rezultat", rezultat.points);
+    points.value += rezultat.points;
   }
-  console.log('REZULTATI 1234: ', points.value)
-  points.value = (points.value / 50) * 100
+  console.log("REZULTATI 1234: ", points.value);
+  points.value = (points.value / 50) * 100;
 }
 
 // Watchers
@@ -138,26 +142,26 @@ function finishChecker() {
 watch(
   () => quizState.errorMsg,
   () => {
-    showPopup.value = true
-    popupMesage.value = quizState.errorMsg
+    showPopup.value = true;
+    popupMesage.value = quizState.errorMsg;
   }
-)
+);
 watch(
   () => quizState.isFetched,
   () => {
     if (quizState.isFetched === true) {
-      showPopup.value = true
+      showPopup.value = true;
       popupMesage.value =
-        'Great! Now you have 20 questions that will be randomly selected by 10. Enjoy'
+        "Great! Now you have 20 questions that will be randomly selected by 10. Enjoy";
     }
   }
-)
+);
 watch(
   () => quizState.chosenQuestions,
   () => {
-    Questions.value = quizState.chosenQuestions
+    Questions.value = quizState.chosenQuestions;
   }
-)
+);
 </script>
 
 <template>
@@ -167,7 +171,9 @@ watch(
     <div class="buttonsSection">
       <div
         class="loading"
-        v-show="!quizState.isFetched && quizState.start && quizState.errorMsg === ''"
+        v-show="
+          !quizState.isFetched && quizState.start && quizState.errorMsg === ''
+        "
       >
         <div>Loading...</div>
         <div class="frameLoad">
@@ -180,7 +186,7 @@ watch(
           class="button-main"
           @click="quizState.setIsInFocus()"
         >
-          {{ quizState.isFocused ? 'Show All' : 'Focused ' }}
+          {{ quizState.isFocused ? "Show All" : "Focused " }}
         </button>
         <button
           v-show="!quizState.start && !quizState.isFetched"
@@ -199,19 +205,28 @@ watch(
         >
           Finish Quiz / Get Out
         </button>
-        <button v-show="quizState.isEnd && quizState.isFetched" class="button-main" @click="getOut">
+        <button
+          v-show="quizState.isEnd && quizState.isFetched"
+          class="button-main"
+          @click="getOut"
+        >
           Get Out
         </button>
         <button
           v-show="
-            (!quizState.isFetched && quizState.start) || (quizState.isFetched && !quizState.start)
+            (!quizState.isFetched && quizState.start) ||
+            (quizState.isFetched && !quizState.start)
           "
           class="button-main"
           @click="quizState.getQuestions"
         >
           Start quiz !
         </button>
-        <button v-show="quizState.start" class="button-main" @click="quizState.getQuestions">
+        <button
+          v-show="quizState.start"
+          class="button-main"
+          @click="quizState.getQuestions"
+        >
           New One
         </button>
         <button v-show="quizState.isEnd" class="button-main">
@@ -261,7 +276,7 @@ watch(
             :class="{
               isActive: quizState.activeSlide === question.id,
               isFocused: quizState.isFocused,
-              isAll: !quizState.isFocused
+              isAll: !quizState.isFocused,
             }"
           >
             <fieldset class="Question">
@@ -272,11 +287,16 @@ watch(
               </label>
               <fieldset class="Answers">
                 <legend>Answers</legend>
-                <label for="Answers" class="answers" :class="quizState.isEnd ? 'end' : ''">
+                <label
+                  for="Answers"
+                  class="answers"
+                  :class="quizState.isEnd ? 'end' : ''"
+                >
                   <div
                     class="answer-box"
                     :class="
-                      quizState.isChecked[question.id - 1] == key && quizState.isEnd
+                      quizState.isChecked[question.id - 1] == key &&
+                      quizState.isEnd
                         ? question.correct == key
                           ? 'correct'
                           : 'false'
@@ -304,7 +324,8 @@ watch(
                     <div
                       class="answer"
                       :class="
-                        quizState.isChecked[question.id - 1] != null && quizState.isEnd
+                        quizState.isChecked[question.id - 1] != null &&
+                        quizState.isEnd
                           ? question.correct == key
                             ? 'correct'
                             : 'false'

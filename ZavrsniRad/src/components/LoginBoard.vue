@@ -1,30 +1,30 @@
 <script setup>
-import { watch, ref } from 'vue'
-import { useUsersStore } from '../stores/User'
-import { useRouter } from 'vue-router'
-import LoginForm from './LoginForm.vue'
+import { watch, ref } from "vue";
+import { useUsersStore } from "../stores/User";
+import { useRouter } from "vue-router";
+import LoginForm from "./LoginForm.vue";
 
-const router = useRouter()
-const usersStore = useUsersStore()
-const show = ref(false)
+const router = useRouter();
+const usersStore = useUsersStore();
+const show = ref(false);
 
 function toggleShow() {
-  show.value = !show.value
+  show.value = !show.value;
 }
 
 function Logout() {
-  usersStore.isLoggedIn = false
-  router.push({ path: '/' })
-  usersStore.avatar = 'Avatar_N.png'
+  usersStore.isLoggedIn = false;
+  router.push({ path: "/" });
+  usersStore.avatar = "Avatar_N.png";
 }
 
 watch(
   () => usersStore.isLoggedIn,
   () => {
-    router.push({ path: '/' })
-    show.value = false
+    router.push({ path: "/" });
+    show.value = false;
   }
-)
+);
 </script>
 
 <template>
@@ -44,7 +44,9 @@ watch(
       <LoginForm />
       <div>
         <button class="button-main" @click="Logout">Log out</button>
-        <button class="button-main icon-cancel" @click="toggleShow">Close</button>
+        <button class="button-main icon-cancel" @click="toggleShow">
+          Close
+        </button>
       </div>
     </div>
   </div>
