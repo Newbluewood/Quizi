@@ -14,52 +14,52 @@ const buttons = [
 const tracks = [
   {
     id: 0,
-    artist: "Benjamin Tissot",
-    track: "Badas",
-    track_url: "/public/audioTracks/badass.mp3",
-    cover: "/public/covers/Cover1.jpg",
+    artist: 'Benjamin Tissot',
+    track: 'Badas',
+    track_url: '/public/audioTracks/badass.mp3',
+    cover: '/public/covers/Cover1.jpg'
   },
   {
     id: 1,
-    artist: "Benjamin Tissot",
-    track: "Dance",
-    track_url: "/public/audioTracks/dance.mp3",
-    cover: "/public/covers/Cover2.jpg",
+    artist: 'Benjamin Tissot',
+    track: 'Dance',
+    track_url: '/public/audioTracks/dance.mp3',
+    cover: '/public/covers/Cover2.jpg'
   },
   {
     id: 2,
-    artist: "Benjamin Tissot",
-    track: "Downtown",
-    track_url: "/public/audioTracks/downtown.mp3",
-    cover: "/public/covers/Cover3.jpg",
+    artist: 'Benjamin Tissot',
+    track: 'Downtown',
+    track_url: '/public/audioTracks/downtown.mp3',
+    cover: '/public/covers/Cover3.jpg'
   },
   {
     id: 3,
-    artist: "Benjamin Tissot",
-    track: "Dub Step",
-    track_url: "/public/audioTracks/dubstep.mp3",
-    cover: "/public/covers/Cover4.jpg",
+    artist: 'Benjamin Tissot',
+    track: 'Dub Step',
+    track_url: '/public/audioTracks/dubstep.mp3',
+    cover: '/public/covers/Cover4.jpg'
   },
   {
     id: 4,
-    artist: "Benjamin Tissot",
-    track: "Extreme Action",
-    track_url: "/public/audioTracks/extremeaction.mp3",
-    cover: "/public/covers/Cover6.jpg",
+    artist: 'Benjamin Tissot',
+    track: 'Extreme Action',
+    track_url: '/public/audioTracks/extremeaction.mp3',
+    cover: '/public/covers/Cover6.jpg'
   },
   {
     id: 5,
-    artist: "Benjamin Tissot",
-    track: "Funky Suspense",
-    track_url: "/public/audioTracks/funkysuspense.mp3",
-    cover: "/public/covers/Cover7.jpg",
+    artist: 'Benjamin Tissot',
+    track: 'Funky Suspense',
+    track_url: '/public/audioTracks/funkysuspense.mp3',
+    cover: '/public/covers/Cover7.jpg'
   },
   {
     id: 6,
-    artist: "Benjamin Tissot",
-    track: "High Octane",
-    track_url: "/public/audioTracks/highoctane.mp3",
-    cover: "/public/covers/Cover8.jpg",
+    artist: 'Benjamin Tissot',
+    track: 'High Octane',
+    track_url: '/public/audioTracks/highoctane.mp3',
+    cover: '/public/covers/Cover8.jpg'
   },
   {
     id: 7,
