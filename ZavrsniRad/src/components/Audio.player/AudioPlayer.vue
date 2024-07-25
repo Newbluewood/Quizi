@@ -16,8 +16,8 @@ const tracks = [
     id: 0,
     artist: 'Benjamin Tissot',
     track: 'Badas',
-    track_url: '../../../../dist/audioTracks/badass.mp3',
-    cover: '../../../../dist/covers/Cover1.jpg'
+    track_url: '../../.././dist/audioTracks/badass.mp3',
+    cover: '../../.././dist/covers/Cover1.jpg'
   },
   {
     id: 1,
