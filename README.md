@@ -3,11 +3,12 @@ Quizz App - Vue
 # Try on:
 https://quizi-if-not-busy.netlify.app/
 
--- User Name : Admin, password: Admin,  
--- User Name : User1, password: User1,  
--- User Name : User2, password: User2,  
--- User Name : Proffesor, password: Noe,  
--- User Name : Jordan, password: Naismith  
+-- User Name / password ,  
+-- Admin / Admin  
+-- User1 / User1,  
+-- User2 / User2,  
+-- Proffesor /  Noe,  
+-- Jordan / Naismith  
 
 NOTE:  It is not real backend data. Data was stored in your browser LocalStorage !
 Ejoy! :)
