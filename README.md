@@ -3,7 +3,7 @@ Quizz App - Vue
 # Try on:
 https://quizi-if-not-busy.netlify.app/
 
--- User Name / password ,  
+User Name / password ,  
 -- Admin / Admin  
 -- User1 / User1,  
 -- User2 / User2,  
