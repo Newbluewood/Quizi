@@ -1,10 +1,10 @@
-# Quizi
+# QUIZI — kviz aplikacija (Vue)
 
-Kviz aplikacija u pregledaču: prijava, rešavanje pitanja (JSON), tabla rezultata i statički sadržaj. Nema pravog bekenda — podaci ostaju u **LocalStorage** u tvom pregledaču.
+Kviz u pregledaču: prijava, rešavanje pitanja (JSON), tabla rezultata i statički sadržaj. Nema pravog bekenda — demo podaci iz JSON fajlova; stanje sesije **čuva se u pregledaču (LocalStorage)**.
 
-## Demo
+## Živi demo
 
-Živa verzija: [quizi-if-not-busy.netlify.app](https://quizi-if-not-busy.netlify.app/)
+[quizi-if-not-busy.netlify.app](https://quizi-if-not-busy.netlify.app/)
 
 ## Tehnologije
 
@@ -12,7 +12,7 @@ U projektu (prema zavisnostima u `Quizi/node_modules`) koriste se m.in. **Vue 3*
 
 ## Probni nalozi
 
-Lozinke su isključivo za demo. Korisničko ime profesora u podacima aplikacije glasi **Proffesor** (dva slova „f“ — usklađeno sa `Quizi/dist/data/Users.json`).
+Lozinke su isključivo za demo — **ne računaj na bezbednost**. Korisničko ime profesora u podacima aplikacije glasi **Proffesor** (dva slova „f“ — usklađeno sa `Quizi/dist/data/Users.json`).
 
 | Uloga      | Korisničko ime | Lozinka   |
 |-----------|----------------|-----------|
@@ -22,13 +22,15 @@ Lozinke su isključivo za demo. Korisničko ime profesora u podacima aplikacije 
 | Profesor  | Proffesor      | Noe       |
 | Korisnik  | Jordan         | Naismith  |
 
+*Lozinka za profesora je `Noe` sa jednim „e“ (stari/demo setup).*
+
 ## Struktura repozitorijuma
 
-- **`Quizi/dist/`** — gotov frontend build (`index.html`, `assets/`, `data/` sa pitanjima i avatarama).
+- **`Quizi/dist/`** — gotov frontend build (`index.html`, `assets/`, `data/` sa pitanjima i avatarama); ovim se build-om objavljuje na Netlify.
 - **`Quizi/.vscode/`** — podešavanja editora.
 - **`README.md`** — ovaj dokument.
 
-Napomena: u istoriji ovog repoa nalazi se i ceo **`Quizi/node_modules/`**. Uobičajena praksa je da se `node_modules` ne čuva u Git-u (`.gitignore` + `npm install`), zajedno sa izvorom (`src/`, `package.json`, konfig Vite-a).
+**Za programere:** u istoriji ovog repoa nalazi se i ceo **`Quizi/node_modules/`**. Uobičajena praksa je da se `node_modules` ne čuva u Git-u (`.gitignore` + `npm install`), zajedno sa izvorom (`src/`, `package.json`, Vite konfiguracija).
 
 ## Pokretanje lokalno (samo build)
 
@@ -38,10 +40,14 @@ Dok izvorni kod nije u repou, možeš servirati samo **`Quizi/dist`** bilo kojim
 npx --yes serve "Quizi/dist"
 ```
 
-Alternativa je da otvoriš `Quizi/dist/index.html` preko jednostavnog lokalnog servera pregledača (neki pregledači direktno `file://` ograničavaju ES module).
+Alternativa je da otvoriš `Quizi/dist/index.html` preko jednostavnog lokalnog servera pregledača (neki pregledači pri `file://` ograničavaju ES module).
 
 Kada povratiš izvor aplikacije, ovde dodaj korake oblika `npm install` → `npm run dev` / `npm run build`.
 
+## Reset podataka
+
+Pošto na serveru nema zajedničkog stanja, sve je vezano za konkretan pregledač i profil — za „čist“ početak obriši podatke sajta / LocalStorage za domen aplikacije.
+
 ---
 
-*Podaci iz kviza i korisnika nisu zajednički na serveru — sve je namenjeno učenju i prototipu.*
+*Podaci iz kviza i korisnika nisu zajednički na serveru — namenjeno učenju i prototipu.*
